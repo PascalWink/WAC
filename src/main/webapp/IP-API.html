@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="IP-API.css">
+		<title>Pascal Wink</title>
+	</head>
+	<body onload="initPage();">
+		<div id="frame">
+			<div>
+				<div id="myLocation">
+					<h3 onclick="initPage()">Mijn locatie</h3>
+					<label id="city">city: 					</label><br> 
+					<label id="region">region:				</label><br> 
+					<label id="region-code">region-code: 	</label><br> 
+					<label id="country">country: 			</label><br> 
+					<label id="land-naam">countryname: 		</label><br> 
+					<label id="latitude">latitude: 			</label><br> 
+					<label id="longitude">longitude: 		</label><br><br><br>
+				</div>
+				<form id="loginForm">
+					username<input type="text" 	 name="username"></input><br>			
+					password<input type="text" 	 name="password"></input><br>
+					<input type="button" id="login" value="login"></input>	
+				</form>
+			</div>
+			
+			<div id="change">
+				<form id="ADDlandForm">
+					<h3>land toevoegen</h3>
+					code			<input type="text" 	 name="code"></input><br>
+					iso3			<input type="text"   name="iso3"></input><br>
+					name			<input type="text" 	 name="name"></input><br>
+					continent		<input type="text" 	 name="continent"></input><br> 
+					regio			<input type="text" 	 name="region"></input><br> 
+					oppervlakte		<input type="number" name="surfacearea"></input><br>
+					inwoners		<input type="number" name="population"></input><br>
+					localname 		<input type="text" 	 name="localname"></input><br>
+					governmentform 	<input type="text" 	 name="governemntform"></input><br> 		
+					hoofdstad		<input type="text" 	 name="capital"></input><br>
+					<input type="button" id="add" value="Add"></input>	
+				</form>
+				
+				<form id="PUTlandForm" style="visibility : hidden;">
+					<h3 id="landcode"></h3>
+					code		<input type="text" 	 id="put_id"></input><br> 			
+					hoofdstad	<input type="text" 	 name="hoofdstad"></input><br> 			
+					regio		<input type="text" 	 name="regio"></input><br>
+					oppervlakte	<input type="number" name="oppervlakte"></input><br>  
+					inwoners	<input type="number" name="inwoners"></input><br>
+					<input type="button" id="put" value="Put"></input>	 
+				</form>
+			</div>
+	
+			<div id="weatherInfo">
+				<br>
+				<h3 id="stad">Het weer in</h3>
+				<br> 
+				<label id="tempratuur">tempratuur:</label><br>
+				<label id="luchtvochtigheid">luchtvochtigheid: </label><br>
+				<label id="windsnelheid">windsnelheid: </label><br>
+				<label id="windrichting">windrichting: </label><br>
+				<label id="zonsopgang">zonsopgang: </label><br> 
+				<label id="zonsondergang">zonsondergang: </label>
+			</div>
+	
+			<div id="countryList">
+				<h3>Beschikbare vakantiebestemmingen</h3>
+				<table id="countrieTable" border="1" style="overflow-x: auto;">
+					<tr>
+						<th>Land</th>
+						<th>hoofdstad</th>
+						<th>regio</th>
+						<th>oppervlakte</th>
+						<th>inwoners</th>
+						<th>wijzig</th>
+						<th>verwijder</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript" src="IP-API.js"></script>
+	</body>
+</html>

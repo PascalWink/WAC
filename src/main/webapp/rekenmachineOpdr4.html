@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="rekenmachineOpdr4.css">
+	<title>JavaScript Rekenmachine</title>
+	<script>		
+		function addNumber(number){
+			var display = document.getElementById('display');
+			if (number == "C"){
+				display.innerHTML = 0;
+			} else{
+				display.innerHTML += number;				
+			}
+		}
+		
+		function bereken(){
+			var display = document.getElementById('display');
+			var content = display.innerHTML;
+			var eerste = 0;
+			var tweede = 0;
+			var command = "";
+			for(var i = 0; i < content.length; i++){
+ 				if (content.charAt(i) == '-'){
+					command = "-";
+					continue;
+				} if (content.charAt(i) == '*'){
+					command = "*";
+					continue;
+				} if (content.charAt(i) == '/'){
+					command = "/";
+					continue;
+				} if (content.charAt(i) == '+'){
+					command = "+";
+					continue;
+				} if (command != ""){
+					tweede += content.charAt(i);
+				} else {
+					eerste += content.charAt(i);
+				} 
+			} 
+			eerste = parseInt(eerste);
+			tweede = parseInt(tweede);
+			if (command == "-"){
+				alert("min");
+				display.innerHTML = eerste - tweede;
+			}
+			if (command == '+'){
+				display.innerHTML = eerste + tweede;
+			} 
+			if (command == '/'){
+				display.innerHTML = eerste / tweede;
+			} if (command == '*'){
+				display.innerHTML = eerste * tweede;
+			} 
+		}
+	</script>
+</head>
+<body>
+	<div id="frame">
+		<div id="display">0</div>
+		<button id="btn_7" onclick="addNumber(7)">7</button>
+		<button id="btn_8" onclick="addNumber(8)">8</button>
+		<button id="btn_9" onclick="addNumber(9)">9</button>
+		<button id="btn_div" onclick="addNumber('/')">/</button>
+		<button id="btn_4" onclick="addNumber(4)">4</button>
+		<button id="btn_5" onclick="addNumber(5)">5</button>
+		<button id="btn_6" onclick="addNumber(6)">6</button>
+		<button id="btn_prod" onclick="addNumber('*')">*</button>
+		<button id="btn_1" onclick="addNumber(1)">1</button>
+		<button id="btn_2" onclick="addNumber(2)">2</button>
+		<button id="btn_3" onclick="addNumber(3)">3</button>
+		<button id="btn_min" onclick="addNumber('-')">-</button>
+		<button id="btn_clear" onclick="addNumber('C')">C</button>
+		<button id="btn_0" onclick="addNumber(0)">0</button>
+		<button id="btn_eq" onclick="bereken()">=</button>
+		<button id="btn_plus" onclick="addNumber('+')">+</button>
+	</div>
+</body>
+</html>
