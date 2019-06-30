@@ -51,7 +51,13 @@ function loadCountries(){
 		        verwijder.addEventListener('click',function(){
 		        	var id = countrie.code;
 		        	console.log(countrie.code+"verwijder");
-		        	fetch("restservices/countries/"+id, {method : 'DELETE'})
+	    			let fetchoptions = {
+	    					method: 'DELETE',
+	    					headers: {
+	    						'Authorization': 'Bearer ' + window.sessionStorage.getItem("sessionToken")
+	    					}
+	    				}
+		        	fetch("restservices/countries/"+id, fetchoptions)
 		        		.then(function (response){
 		        			if(response.ok){
 		        				var table = document. getElementById("countrieTable");
@@ -60,8 +66,8 @@ function loadCountries(){
 		        				}
 		        				console.log("countrie verwijdert");
 		        				loadCountries();
-		        			} else if (response.status == 404) {
-		        				console.log("niet gevonden");
+		        			} else if (response.status == 401) {
+		        				console.log("niet ingelogd");
 		        			} else {
 		        				console.log("kan niet verwijderen")
 		        			}
@@ -70,7 +76,7 @@ function loadCountries(){
 		        
 		        td7.appendChild(verwijder);
 		        tr.appendChild(td7)
-	
+		        //DAS
 			    countrieTable.appendChild(tr);
 			});		        
 		}
@@ -164,18 +170,21 @@ document.getElementById("put").addEventListener("click", function(){
 	var formData = new FormData(document.querySelector("#PUTlandForm"));
 	formData.append("namePut", document.getElementById("namePut").value);
 	var encData = new URLSearchParams(formData.entries());
-	alert(encData);
 	let fetchoptions = {
 			method: 'PUT',
-			body: encData
+			body: encData,
+			headers: {
+				'Authorization': 'Bearer ' + window.sessionStorage.getItem("sessionToken")
+			}
 		}
 	fetch("restservices/countries/"+id, fetchoptions)
 	.then(function(response){
 		if(response.ok){
 			console.log('saved')
 		} 
-		else if(response.status == 404) console.log("not found")
-		else console.log("errorr")
+		else{
+			alert("niet ingelogd");
+		}
 	})
 	var table = document. getElementById("countrieTable");
 	for(var i = table.rows.length; i > -1;i--){
@@ -187,13 +196,22 @@ document.getElementById("put").addEventListener("click", function(){
 document.getElementById("add").addEventListener("click", function(){
 	var formData = new FormData(document.querySelector("#ADDlandForm"));
 	var encData = new URLSearchParams(formData.entries());
-	fetch("restservices/countries", {method : 'POST', body : encData})
+	let fetchoptions = {
+			method: 'POST',
+			body: encData,
+			headers: {
+				'Authorization': 'Bearer ' + window.sessionStorage.getItem("sessionToken")
+			}
+		}
+	fetch("restservices/countries", fetchoptions)
 	.then(function(response){
 		if(response.ok){
 			alert("opgeslagen");
 		} 
-		else{
+		else if(response.status == 400){
 			alert("landCode bestaat al")
+		} else{
+			alert("je bent niet ingelogd");
 		}
 	})
 	var table = document. getElementById("countrieTable");
@@ -207,9 +225,15 @@ document.getElementById("login").addEventListener("click", function(){
 	var formData = new FormData(document.querySelector("#loginForm"));
 	var encData = new URLSearchParams(formData.entries());
 	fetch("restservices/authentication", {method : 'POST', body : encData})
-	.then(response => response.json())
-	.then(function(loginKey){
-	    sessionStorage.setItem('sessionToken', loginKey.JWT);
-	    console.log(window.sessionStorage);
+	.then(function(response){
+		if(response.ok){
+			return response.json()
+		} else {
+			alert("inloggen niet gelukt");
+		};
+	})
+	.then(function(myJson){
+		window.sessionStorage.setItem("sessionToken", myJson.JWT);
+		alert("ingelogd met token : " + window.sessionStorage.getItem("sessionToken"));
 	})
 });

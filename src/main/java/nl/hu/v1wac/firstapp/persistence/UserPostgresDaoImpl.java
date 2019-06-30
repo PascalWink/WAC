@@ -13,7 +13,7 @@ public class UserPostgresDaoImpl extends PostgresBaseDao implements UserDao {
 			PreparedStatement pstmt = con.prepareStatement(query);
 			ResultSet dbResultSet = pstmt.executeQuery();
 			while (dbResultSet.next()) {
-				String naam = dbResultSet.getString("username");
+				String naam = dbResultSet.getString("role");
 				return naam;
 			}
 		} catch (SQLException sqle) {

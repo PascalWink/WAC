@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -24,6 +25,7 @@ public class ServiceProvider {
 	}
 	
 	@POST
+	@RolesAllowed("user")
 	@Produces("application/json")
 	public Response saveCountry(@FormParam("code") String id,
 								@FormParam("iso3") String iso3,
@@ -45,6 +47,7 @@ public class ServiceProvider {
 	
 	@Path("{land}")
 	@PUT
+	@RolesAllowed("user")
 	@Produces("application/json")
 	public Response updateLand(@PathParam("land") String id,
 								@FormParam("hoofdstad") String hoofdstad,
@@ -66,9 +69,11 @@ public class ServiceProvider {
 	
 	@Path("{land}")
 	@DELETE
+	@RolesAllowed("user")
 	@Produces("application/json")
 	public Response deleteLand(@PathParam("land") String code) {
-
+		System.out.println("DELETE");
+		
 		if(!worldService.deleteCountry(code)) {
 			return Response.status(404).build();
 		}
@@ -137,7 +142,6 @@ public class ServiceProvider {
 	@Path("largestpopulations")
 	@Produces("application/json")
 	public String getLargestPopulations() {
-
 		WorldService service = ServiceProvider.getWorldService();
 		List<Country> top10 = service.get10LargestPopulations();
 		JsonArrayBuilder jab = Json.createArrayBuilder();

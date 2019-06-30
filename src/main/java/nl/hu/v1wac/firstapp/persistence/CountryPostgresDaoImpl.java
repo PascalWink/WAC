@@ -157,6 +157,7 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 	public boolean delete(String code) {
 		try (Connection con = super.getConnection()) {
 			String query = "DELETE FROM country WHERE code = '"+code+"'";
+			System.out.println(query);
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.executeUpdate();
 			return true;
