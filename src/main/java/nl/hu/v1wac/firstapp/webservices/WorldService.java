@@ -55,9 +55,11 @@ public class WorldService {
 	
 	public Country getCountryByCode(String code) {
 		Country result = null;
-		
+		System.out.println("s");
+
 		for (Country c : allCountries) {
 			if (c.getCode().equals(code)) {
+				System.out.println(c);
 				result = c;
 				break;
 			}

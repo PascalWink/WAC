@@ -12,7 +12,7 @@ public interface CountryDao {
 
 	public List<Country> find10LargestSurfaces();
 
-	public boolean update(String id, String hoofdstad, String regio, double surface, int inwoners);
+	public boolean update(String id, String namePut, String hoofdstad, String regio, double surface, int inwoners);
 
 	public boolean delete(String code);
 	

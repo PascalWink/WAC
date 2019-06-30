@@ -46,6 +46,15 @@ public class Country {
 		this.localName = ln;
 	}
 
+	public Country(String id, String nm, String capi, String reg, double sur, int pop) {
+		this.code = id; 
+		this.name = nm;
+		this.capital = capi;
+		this.region = reg;
+		this.surface = sur;
+		this.population = pop;
+		}
+
 	public String getCode() {
 		return code;
 	}

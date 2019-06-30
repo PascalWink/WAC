@@ -36,9 +36,11 @@ public class ServiceProvider {
 								@FormParam("governmentform") String governmentform,
 								@FormParam("capital") String capital){
 		boolean country = worldService.saveCountry(id, iso3, name, continent, region, surfacearea, population, localname, governmentform, capital);		
-		System.out.println("komt hiersakjdajsdaoijdisajdojaoidojsaidaojosidjajsoida");
-
-		return Response.ok(country).build();
+		System.out.println(country);
+		if(!country) {
+			return Response.status(400).build();
+		}
+		return Response.ok().build();
 	}
 	
 	@Path("{land}")
@@ -48,10 +50,11 @@ public class ServiceProvider {
 								@FormParam("hoofdstad") String hoofdstad,
 								@FormParam("regio") String regio,
 								@FormParam("oppervlakte") double surface,
-								@FormParam("inwoners") int inwoners ){
-		System.out.println("komt hiersakjdajsdaoijdisajdojaoidojsaidaojosidjajsoida");
-
-		boolean goed = worldService.updateCountry(id, hoofdstad, regio, surface, inwoners);
+								@FormParam("inwoners") int inwoners,
+								@FormParam("namePut") String namePut){
+		
+		System.out.println("put "+ namePut);
+		boolean goed = worldService.updateCountry(id, namePut, hoofdstad, regio, surface, inwoners);
 		
 		if(goed == false) {
 			Map<String, String> messages = new HashMap<String, String>();
@@ -65,6 +68,7 @@ public class ServiceProvider {
 	@DELETE
 	@Produces("application/json")
 	public Response deleteLand(@PathParam("land") String code) {
+
 		if(!worldService.deleteCountry(code)) {
 			return Response.status(404).build();
 		}
@@ -74,6 +78,7 @@ public class ServiceProvider {
 	@GET
 	@Produces("application/json")
 	public String getCountries() {
+
 		WorldService service = ServiceProvider.getWorldService();
 		List<Country> Countries = service.getAllCountries();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -90,20 +95,23 @@ public class ServiceProvider {
 	@Path("{land}")
 	@Produces("application/json")
 	public String getCountryInfo(@PathParam("land") String land) {
+
 		WorldService service = ServiceProvider.getWorldService();
 		Country country = service.getCountryByCode(land);
 		JsonObjectBuilder job = Json.createObjectBuilder();
-		job.add("code", country.getCode());
-		job.add("iso3", country.getIso3());
+		
+		job.add("code", land);
+
 		job.add("naam", country.getName());
-		job.add("continent", country.getContinent());
+
 		job.add("capital", country.getCapital());
-		job.add("region", country.getSurface());
+
+		job.add("region", country.getRegion());
+
 		job.add("surface", country.getSurface());
+
 		job.add("population", country.getPopulation());
-		job.add("government", country.getGovernment());
-		job.add("lat", country.getLatitude());
-		job.add("lng", country.getLongitude());		
+	
 		return job.build().toString();
 	}
 	
@@ -111,6 +119,7 @@ public class ServiceProvider {
 	@Path("largestsurfaces")
 	@Produces("application/json")
 	public String getLargestSurfaces() {
+
 		WorldService service = ServiceProvider.getWorldService();
 		List<Country> top10 = service.get10LargestSurfaces();;
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -128,6 +137,7 @@ public class ServiceProvider {
 	@Path("largestpopulations")
 	@Produces("application/json")
 	public String getLargestPopulations() {
+
 		WorldService service = ServiceProvider.getWorldService();
 		List<Country> top10 = service.get10LargestPopulations();
 		JsonArrayBuilder jab = Json.createArrayBuilder();

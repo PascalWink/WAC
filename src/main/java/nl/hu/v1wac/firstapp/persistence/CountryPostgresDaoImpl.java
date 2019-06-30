@@ -96,10 +96,12 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 	public Country findByCode(String codeland) {
 		Country land = new Country();
 		try (Connection con = super.getConnection()) {
+			int d = 0;
 			String query = "SELECT * from country where code = '" + codeland.toUpperCase() + "'";
 			PreparedStatement pstmt = con.prepareStatement(query);
 			ResultSet dbResultSet = pstmt.executeQuery();
 			while (dbResultSet.next()) {
+				d ++;
 				String code = dbResultSet.getString("code");
 				String iso3 = dbResultSet.getString("iso3");
 				String nm = dbResultSet.getString("name");
@@ -111,7 +113,28 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 				String gov = dbResultSet.getString("governmentform");
 				double lat = dbResultSet.getDouble("latitude");
 				double lng = dbResultSet.getDouble("longitude");
-				land = new Country(code, iso3, nm, cap, ct, reg, sur, pop, gov, lat, lng);
+				land = new Country(code, nm, cap, reg, sur, pop);
+			}
+			if(d == 0) {
+				String query1 = "SELECT * from country where code = '" + codeland + "'";
+				PreparedStatement pstmt1 = con.prepareStatement(query1);
+				ResultSet dbResultSet1 = pstmt1.executeQuery();
+				while (dbResultSet1.next()) {
+					d ++;
+					String code = dbResultSet1.getString("code");
+					String iso3 = dbResultSet1.getString("iso3");
+					String nm = dbResultSet1.getString("name");
+					String cap = dbResultSet1.getString("capital");
+					String ct = dbResultSet1.getString("continent");
+					String reg = dbResultSet1.getString("region");
+					double sur = dbResultSet1.getDouble("surfacearea");
+					int pop = dbResultSet1.getInt("population");
+					String gov = dbResultSet1.getString("governmentform");
+					double lat = dbResultSet1.getDouble("latitude");
+					double lng = dbResultSet1.getDouble("longitude");
+					land = new Country(code, nm, cap, reg, sur, pop);
+
+				}
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -119,17 +142,15 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 		return land;
 	}
 
-	public boolean update(String id, String hoofdstad, String regio, double surface, int inwoners) {
+	public boolean update(String id, String namePut, String hoofdstad, String regio, double surface, int inwoners) {
 		try (Connection con = super.getConnection()) {
-			String updatequery = "UPDATE country SET capital = '"+hoofdstad+"', surfacearea = '"+surface+"', population = '"+inwoners+"' WHERE code = '"+id+"'";
+			String updatequery = "UPDATE country SET name= '"+namePut+"', capital = '"+hoofdstad+"', surfacearea = '"+surface+"', population = '"+inwoners+"' WHERE code = '"+id+"'";
 			PreparedStatement pstmt = con.prepareStatement(updatequery);
 			pstmt.executeUpdate();
 			return true;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
-		System.out.println("komt hiersakjdajsdaoijdisajdojaoidojsaidaojosidjajsoida");
-
 		return false;
 	}
 
@@ -149,7 +170,7 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 		try (Connection con = super.getConnection()) {
 			country.getCapital();
 			String query = "INSERT INTO country(code, iso3, name, capital, continent, region, surfacearea, population, governmentform, localname) VALUES('";
-			query += country.getCode() + "','" + country.getIso3() + "','" + country.getName() + "','"
+			query += country.getCode().toUpperCase() + "','" + country.getIso3() + "','" + country.getName() + "','"
 					+ country.getCapital() + "','" + country.getContinent() + "','";
 			query += country.getRegion() + "','" + country.getSurface() + "','" + country.getPopulation() + "','"
 					+ country.getGovernment() + "', '"+country.getLocalName()+"')";

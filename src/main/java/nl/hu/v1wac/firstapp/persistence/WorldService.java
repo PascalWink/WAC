@@ -64,12 +64,23 @@ public class WorldService {
 		return countryDao.delete(code);
 	}
 
-	public boolean updateCountry(String id, String hoofdstad, String regio, double surface, int inwoners) {
-		return countryDao.update(id, hoofdstad, regio, surface, inwoners);
+	public boolean updateCountry(String id, String namePut, String hoofdstad, String regio, double surface, int inwoners) {
+		return countryDao.update(id, namePut, hoofdstad, regio, surface, inwoners);
 	}
 
 	public boolean saveCountry(String id, String iso3, String name, String continent, String region, double surfacearea,
 			int population, String localname, String governmentform, String capital) {
+		System.out.println(id);
+		System.out.println(iso3);
+		System.out.println(name);
+		System.out.println(continent);
+		System.out.println(region);
+		System.out.println(surfacearea);
+		System.out.println(population);
+		System.out.println(localname);
+		System.out.println(governmentform);
+		System.out.println(capital);
+
 		Country country = new Country(id, iso3, name, capital, continent, region, surfacearea, population,
 				governmentform, localname);
 		return countryDao.save(country);

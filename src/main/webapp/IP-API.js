@@ -23,7 +23,7 @@ function loadCountries(){
 		        tr.appendChild(td2)
 		        // regio
 			    var td3 = document.createElement('TD')
-		        td3.appendChild(document.createTextNode(countrie.continent));
+		        td3.appendChild(document.createTextNode(countrie.region));
 		        tr.appendChild(td3)
 		        // oppervlakte
 			    var td4 = document.createElement('TD')
@@ -162,13 +162,13 @@ function initPage() {
 document.getElementById("put").addEventListener("click", function(){
 	var id = document.querySelector("#put_id").value;
 	var formData = new FormData(document.querySelector("#PUTlandForm"));
+	formData.append("namePut", document.getElementById("namePut").value);
 	var encData = new URLSearchParams(formData.entries());
-	var fetchoptions = {
+	alert(encData);
+	let fetchoptions = {
 			method: 'PUT',
-			headers : {
-				'Authorization' : 'Bearer' + window.sessionStorage.getItem("sessionToken")
-			}
-	}
+			body: encData
+		}
 	fetch("restservices/countries/"+id, fetchoptions)
 	.then(function(response){
 		if(response.ok){
@@ -190,10 +190,11 @@ document.getElementById("add").addEventListener("click", function(){
 	fetch("restservices/countries", {method : 'POST', body : encData})
 	.then(function(response){
 		if(response.ok){
-			console.log('saved')
+			alert("opgeslagen");
 		} 
-		else if(response.status == 404) console.log("not found")
-		alert("niet toegevoegd")
+		else{
+			alert("landCode bestaat al")
+		}
 	})
 	var table = document. getElementById("countrieTable");
 	for(var i = table.rows.length; i > -1;i--){
